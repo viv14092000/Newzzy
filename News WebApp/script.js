@@ -6,7 +6,16 @@ function reload() {
 }
 
 
-window.addEventListener("load", () => fetchNews("India"));
+// window.addEventListener("load", () => fetchNews("India"));
+if (typeof window !== 'undefined') {
+    const API_KEY = "186f289aaec84fb6a4dadb4b8d166a0c";
+    const url = "https://newsapi.org/v2/everything?q=";
+
+    function reload() {
+        window.location.reload();
+    }
+
+    window.addEventListener("load", () => fetchNews("India"));}
 
 async function fetchNews(query) {
     const res = await fetch(`${url}${query}&apiKey=${API_KEY}`);
@@ -59,23 +68,47 @@ function onNavItemClick(id) {
     curSelectedNav.classList.add("active");
 }
 
-const searchButton = document.getElementById("search-button");
-const searchText = document.getElementById("search-text");
+// const searchButton = document.getElementById("search-button");
+// const searchText = document.getElementById("search-text");
 
-searchButton.addEventListener("click", () => {
-    const query = searchText.value;
-    if (!query) return;
-    fetchNews(query);
-    curSelectedNav?.classList.remove("active");
-    curSelectedNav = null;
-});
-searchText.addEventListener('keypress',function (e){
-    if(e.key==='Enter'){
+// searchButton.addEventListener("click", () => {
+//     const query = searchText.value;
+//     if (!query) return;
+//     fetchNews(query);
+//     curSelectedNav?.classList.remove("active");
+//     curSelectedNav = null;
+// });
+// searchText.addEventListener('keypress',function (e){
+//     if(e.key==='Enter'){
+//         const query = searchText.value;
+//         if (!query) return;
+//         fetchNews(query);
+//         curSelectedNav?.classList.remove("active");
+//         curSelectedNav = null;
+//     }
+    
+// });
+// Check if 'document' is defined before using it
+if (typeof document !== 'undefined') {
+    const searchButton = document.getElementById("search-button");
+    const searchText = document.getElementById("search-text");
+
+    searchButton.addEventListener("click", () => {
         const query = searchText.value;
         if (!query) return;
         fetchNews(query);
         curSelectedNav?.classList.remove("active");
         curSelectedNav = null;
-    }
-    
-});
+    });
+
+    searchText.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            const query = searchText.value;
+            if (!query) return;
+            fetchNews(query);
+            curSelectedNav?.classList.remove("active");
+            curSelectedNav = null;
+        }
+    });
+}
+
